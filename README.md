@@ -6,7 +6,7 @@
 
 本项目分为两部分组成，UUID_Gen以及Feeyo-adsb。
 
-UUID_Gen中的UUID生成器基于UUID Version 4。		
+注：UUID_Gen中的UUID生成器基于UUID Version 4。		
 
 由于本项目不包括Dump1090，也不限制SBS服务是否运行在本机，因此你可能需要首先安装Dump1090，具体细节可自行搜索，当然你也可以在本项目提一个Issue，我将很乐意为你解答。
 
@@ -24,7 +24,7 @@ url=http://adsb.feeyo.com/adsb/ReceiveCompressADSB.php
 
 以上展现的是dump1090运行在本机的情况，你也可以按照实际情况进行填写。
 
-
+如果你不具备编译条件，可以直接前往[本项目发布页](https://github.com/dextercai/feeyo-adsb-golang/releases)下载使用。
 
 ## 其他
 

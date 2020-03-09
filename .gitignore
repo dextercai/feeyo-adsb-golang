@@ -1,3 +1,4 @@
 ﻿*.exe
 *.txt
 /Release/*
+/.idea/*

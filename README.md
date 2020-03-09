@@ -28,7 +28,9 @@ url=http://adsb.feeyo.com/adsb/ReceiveCompressADSB.php
 
 ## 其他
 
-如果使用树莓派加RTL2832为主控的电视棒，建议您前往（https://flightadsb.variflight.com/）使用官方ADSB脚本，或者前往（https://github.com/dextercai/FEEYO-Adsb），项目内有一份相同的官方脚本。
+如果使用树莓派加RTL2832为主控的电视棒，建议您前往（[飞常准ADSB](https://flightadsb.variflight.com/)）
 
-如果使用其他Linux发行版，可参考我的这篇博文（https://blog.dextercai.com/2018-06-a04d2416/），手动移植，或者使用本项目。
+使用官方ADSB脚本，或者前往（[FEEYO-Adsb](https://github.com/dextercai/FEEYO-Adsb)），项目内有一份相同的官方脚本。
+
+如果使用其他Linux发行版，可参考我的[这篇博文](https://blog.dextercai.com/2018-06-a04d2416/)，手动移植，或者使用本项目。
 

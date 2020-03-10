@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"compress/zlib"
 	"encoding/base64"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"net"
@@ -16,6 +15,7 @@ import (
 )
 var UUID, IpDump1090, PortDump1090,FeeyoUrl string
 func main() {
+	println("敬告：请不要尝试将相关电波数据传送至FR24，RadarBox，FA等境外平台，这将严重违反无线电管理条例以及国家安全法！")
 	var err error
 	UUID, err = config.Config.GetValue("config", "UUID")
 	IpDump1090, err = config.Config.GetValue("config", "ip")
@@ -27,19 +27,28 @@ func main() {
 	}
 	dump1090Conn, err := net.Dial("tcp", IpDump1090 + ":" + PortDump1090)
 	if err != nil {
-		fmt.Println("连接到Dump1090失败", err.Error())
+		println(time.Now().Format("2006-01-02 15:04:05"), "\t连接到Dump1090失败\t", err.Error())
 		return
+	}else{
+		println(time.Now().Format("2006-01-02 15:04:05"), "\t连接成功\t")
 	}
 	var buf [1024]byte
 	for {
 		read, err := dump1090Conn.Read(buf[0:])
 		if err != nil {
-			println("读取错误", err.Error())
+			println(time.Now().Format("2006-01-02 15:04:05"), "\t读取错误\t", err.Error())
 			_ = dump1090Conn.Close()
-			return
+			println(time.Now().Format("2006-01-02 15:04:05"), "\t断开链接\t")
+			dump1090Conn, err = net.Dial("tcp", IpDump1090 + ":" + PortDump1090)
+			println(time.Now().Format("2006-01-02 15:04:05"), "\t尝试重连\t")
+			if err!=nil{
+				println(time.Now().Format("2006-01-02 15:04:05"), "\t重连成功\t")
+			}
+		}else{
+			if buf[read-1] == 10 {
+				sendMessage(buf[0:read])
+			}
 		}
-		sendMessage(buf[0:read])
-
 	}
 }
 
@@ -52,9 +61,9 @@ func sendMessage(line []byte){
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
 	if err != nil{
-		println(time.Now().String(), "上传错误", err.Error())
+		println(time.Now().Format("2006-01-02 15:04:05"), "\t上传错误\t", err.Error())
 	}else{
-		println(time.Now().String(), "上传成功", string(body))
+		print("\r",time.Now().Format("2006-01-02 15:04:05"), "\t上传成功\t", string(body))
 	}
 }
 

@@ -10,7 +10,6 @@ import (
 	"io/ioutil"
 	"net"
 	"net/http"
-	"net/textproto"
 	"net/url"
 	"strings"
 	"time"
@@ -31,15 +30,15 @@ func main() {
 		fmt.Println("连接到Dump1090失败", err.Error())
 		return
 	}
-	pipeline := textproto.NewConn(dump1090Conn)
+	var buf [1024]byte
 	for {
-		message, err := pipeline.ReadLineBytes()
+		read, err := dump1090Conn.Read(buf[0:])
 		if err != nil {
 			println("读取错误", err.Error())
 			_ = dump1090Conn.Close()
 			return
 		}
-		go sendMessage(message)
+		sendMessage(buf[0:read])
 
 	}
 }

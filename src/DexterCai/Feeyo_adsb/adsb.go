@@ -41,9 +41,7 @@ func main() {
 			println(time.Now().Format("2006-01-02 15:04:05"), "\t断开链接\t")
 			dump1090Conn, err = net.Dial("tcp", IpDump1090 + ":" + PortDump1090)
 			println(time.Now().Format("2006-01-02 15:04:05"), "\t尝试重连\t")
-			if err!=nil{
-				println(time.Now().Format("2006-01-02 15:04:05"), "\t重连成功\t")
-			}
+			continue
 		}else{
 			if buf[read-1] == 10 {
 				sendMessage(buf[0:read])
@@ -58,8 +56,12 @@ func sendMessage(line []byte){
 	postValue.Set("from", UUID)
 	postValue.Set("code", sourceData)
 	resp, err := http.Post(FeeyoUrl,"application/x-www-form-urlencoded",strings.NewReader(postValue.Encode()))
+	if err != nil {
+		println(time.Now().Format("2006-01-02 15:04:05"), "\t上传错误\t", err.Error())
+		return
+	}
 	defer resp.Body.Close()
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil{
 		println(time.Now().Format("2006-01-02 15:04:05"), "\t上传错误\t", err.Error())
 	}else{

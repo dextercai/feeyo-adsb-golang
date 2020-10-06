@@ -4,9 +4,8 @@
 
 ## 使用说明
 
-本项目分为两部分组成，UUID_Gen以及Feeyo-adsb。
-
-注：UUID_Gen中的UUID生成器基于UUID Version 4。		
+本项目已更新，修改为Golang 1.11起支持的Go modules。
+去除了UUID生成器，请自定义UUID时确保不与其他人冲突。
 
 由于本项目不包括Dump1090，也不限制SBS服务是否运行在本机，因此你可能需要首先安装Dump1090，具体细节可自行搜索，当然你也可以在本项目提一个Issue，我将很乐意为你解答。
 

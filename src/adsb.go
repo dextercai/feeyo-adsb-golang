@@ -43,6 +43,7 @@ func main() {
 		dump1090Conn, err := net.Dial("tcp", ipDump1090+":"+portDump1090)
 		if err != nil {
 			fmt.Println(time.Now().Format("2006-01-02 15:04:05"), "\t连接到Dump1090失败\t", err.Error())
+			time.Sleep(15 * time.Second)
 			continue
 		} else {
 			fmt.Println(time.Now().Format("2006-01-02 15:04:05"), "\t连接到Dump1090成功\t")

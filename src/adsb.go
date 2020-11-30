@@ -48,7 +48,7 @@ func main() {
 		} else {
 			fmt.Println(time.Now().Format("2006-01-02 15:04:05"), "\t连接到Dump1090成功\t")
 		}
-		var buf [1024]byte
+		var buf [8192]byte
 		for {
 			read, err := dump1090Conn.Read(buf[0:])
 			if err != nil {

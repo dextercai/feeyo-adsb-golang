@@ -5,7 +5,7 @@ import (
 	"compress/zlib"
 	"encoding/base64"
 	"fmt"
-	"github.com/Unknwon/goconfig"
+	// "github.com/Unknwon/goconfig"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -13,6 +13,7 @@ import (
 	"os"
 	"strings"
 	"time"
+	"flag"
 )
 
 var (
@@ -21,20 +22,22 @@ var (
 	feeyoUrl     string
 	UUID         string
 )
-var Config *goconfig.ConfigFile
+// var Config *goconfig.ConfigFile
 
+var err error
 func main() {
-	initConfig()
-	fmt.Println("本项目地址：https://github.com/dextercai/feeyo-adsb-golang")
-	fmt.Println("温馨提示：二次分发时请遵守GPL3.0协议")
+	// initConfig()
+	
+	fmt.Println("本项目地址: https://github.com/dextercai/feeyo-adsb-golang")
+	fmt.Println("温馨提示: 二次分发时请遵守GPL3.0协议")
 	fmt.Println("=============================================================================================")
-	fmt.Println("敬告：请不要尝试将相关电波数据传送至FR24，RadarBox，FA等境外平台，这将严重违反无线电管理条例以及国家安全法！")
+	fmt.Println("敬告: 请不要尝试将相关电波数据传送至FR24, RadarBox, FA等境外平台, 这将严重违反无线电管理条例以及国家安全法!")
+	flag.StringVar(&UUID, "uuid", "", "UUID 16位")
+	flag.StringVar(&ipDump1090, "ip", "127.0.0.1", "设备IP")
+	flag.StringVar(&portDump1090, "port","30003", "Dump1090端口")
+	flag.StringVar(&feeyoUrl, "feeyoUrl", "https://adsb.feeyo.com/adsb/ReceiveCompressADSB.php", "飞常准接口地址")
+	flag.Parse()
 
-	var err error
-	UUID, err = Config.GetValue("config", "UUID")
-	ipDump1090, err = Config.GetValue("config", "ip")
-	portDump1090, err = Config.GetValue("config", "port")
-	feeyoUrl, err = Config.GetValue("config", "url")
 	if UUID == "" || len(UUID) != 16 || ipDump1090 == "" || portDump1090 == "" || feeyoUrl == "" || err != nil {
 		println("配置错误")
 		os.Exit(0)
@@ -65,14 +68,15 @@ func main() {
 	}
 
 }
-func initConfig() {
-	var err error
-	Config, err = goconfig.LoadConfigFile("conf.ini")
-	if err != nil {
-		fmt.Println("conf.ini配置文件不存在，请检查.")
-		os.Exit(0)
-	}
-}
+// func initConfig() {
+// 	var err error
+// 	Config, err = goconfig.LoadConfigFile("conf.ini")
+// 	if err != nil {
+// 		fmt.Println("conf.ini配置文件不存在，请检查.")
+// 		os.Exit(0)
+// 	}
+// }
+
 func sendMessage(line []byte) {
 	sourceData := base64.StdEncoding.EncodeToString(DoZlibCompress(line))
 	postValue := url.Values{}

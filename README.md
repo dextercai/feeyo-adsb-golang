@@ -37,14 +37,15 @@ Usage of ./adsb:
   -feeyo-url string
         飞常准接口地址 (default "https://adsb.feeyo.com/adsb/ReceiveCompressADSB.php")
   -ip string
-        设备IP (default "127.0.0.1")
+        dump1090服务IP (default "127.0.0.1")
   -port string
-        Dump1090端口 (default "30003")
+        dump1090服务端口 (default "30003")
   -use-file
         是否使用conf文件作为配置来源 (default true)
   -uuid string
         UUID 16位
 ```
+
 ## TODO
 - 统计、集成地图
 - 集成部分dump1090功能

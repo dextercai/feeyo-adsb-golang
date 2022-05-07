@@ -6,12 +6,15 @@
 
 ## 使用说明
 
-本项目已更新，修改为Golang 1.11起支持的Go modules。
-主分支去除了UUID生成器的代码，但依旧保留二进制版本，请自定义UUID时确保不与其他人冲突。
-
 由于本项目不包括Dump1090，也不限制SBS服务是否运行在本机，因此你可能需要首先安装Dump1090，具体细节可自行搜索，当然你也可以在本项目提一个Issue，我将很乐意为你解答。
 
-你需要编辑conf.ini文件
+如果你不具备编译条件，可以直接前往[本项目发布页](https://github.com/dextercai/feeyo-adsb-golang/releases)下载使用。
+
+具有两种配置方式
+
+### 一般文件模式（默认）
+
+你需要在程序**同目录**创建conf.ini文件，内容如下。
 
 ```
 [config]
@@ -23,7 +26,30 @@ url=http://adsb.feeyo.com/adsb/ReceiveCompressADSB.php
 
 以上展现的是dump1090运行在本机的情况，你也可以按照实际情况进行填写。
 
-如果你不具备编译条件，可以直接前往[本项目发布页](https://github.com/dextercai/feeyo-adsb-golang/releases)下载使用。
+### 命令行模式（进阶）
+
+若对终端操作较为熟悉，可使用该方式。
+
+```
+Usage of ./adsb:
+  -conf string
+        conf文件位置 (default "./conf.ini")
+  -feeyo-url string
+        飞常准接口地址 (default "https://adsb.feeyo.com/adsb/ReceiveCompressADSB.php")
+  -ip string
+        设备IP (default "127.0.0.1")
+  -port string
+        Dump1090端口 (default "30003")
+  -use-file
+        是否使用conf文件作为配置来源 (default true)
+  -uuid string
+        UUID 16位
+```
+## TODO
+- 统计、集成地图
+- 集成部分dump1090功能
+- webhook
+
 
 ## 其他
 

@@ -12,6 +12,8 @@
 
 具有两种配置方式
 
+UUID在线生成可访问：https://feeyo-uuid.dextercai.com
+
 ### 一般文件模式（默认）
 
 你需要在程序**同目录**创建conf.ini文件，内容如下。

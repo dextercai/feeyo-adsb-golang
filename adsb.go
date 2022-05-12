@@ -22,7 +22,7 @@ const eachPackage = 8192
 const thisLogFlag = "main"
 
 func main() {
-	fmt.Println("项目地址: https://github.com/dextercai/feeyo-adsb-golang 基于GPL3.0协议进行开源")
+	fmt.Println("项目地址: https://github.com/dextercai/feeyo-adsb-golang")
 	fmt.Printf("当前版本：%s，编译时间：%s", constant.Version, constant.BuildTime)
 	fmt.Println("")
 	fmt.Println("敬告: 请不要尝试将相关电波数据传送至FR24, RadarBox, FA等境外平台, 这将严重违反无线电管理条例以及国家安全法!")

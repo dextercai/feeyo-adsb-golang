@@ -63,8 +63,8 @@ Usage of ./adsb:
 如果使用其他Linux发行版，可参考下面列出的相关资料，手动移植，或者使用本项目。
 
 飞常准自建 ADS-B Windows 上传方案
-https://blog.dextercai.com/2020-03-20-78.html
+https://blog.dextercai.com/archives/78.html
 
 在 Arch Linux 下安装飞常准上传套件
-https://blog.dextercai.com/2018-06-24-45.html
+https://blog.dextercai.com/archives/45.html
 

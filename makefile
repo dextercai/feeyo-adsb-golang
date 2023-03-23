@@ -1,6 +1,6 @@
 NAME=feeyo-adsb-golang
 BINDIR=bin
-VERSION=$(shell git describe --tags || echo "unknown version")
+VERSION=$(shell git describe --tags || echo "unknown")
 BUILDTIME=$(shell date "+%F %T %Z" -u)
 GOBUILD=CGO_ENABLED=0 go build -trimpath -ldflags '-X "dextercai.com/feeyo-adsb-golang/constant.Version=$(VERSION)" \
 		-X "dextercai.com/feeyo-adsb-golang/constant.BuildTime=$(BUILDTIME)" \

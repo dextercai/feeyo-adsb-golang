@@ -21,6 +21,24 @@ var err error
 const eachPackage = 8192
 const thisLogFlag = "main"
 
+var confCheckFunc = map[string]func(tConf conf.TConf) bool{
+	"UUID为空": func(tConf conf.TConf) bool {
+		return tConf.UUID == ""
+	},
+	"UUID不满足16位标准长度": func(tConf conf.TConf) bool {
+		return len(tConf.UUID) != 16
+	},
+	"Dump1090地址配置为空": func(tConf conf.TConf) bool {
+		return tConf.IpDump1090 == ""
+	},
+	"Dump1090端口配置为空": func(tConf conf.TConf) bool {
+		return tConf.PortDump1090 == ""
+	},
+	"FeeyoUrl配置未空": func(tConf conf.TConf) bool {
+		return tConf.FeeyoUrl == ""
+	},
+}
+
 func main() {
 	fmt.Println("项目地址: https://github.com/dextercai/feeyo-adsb-golang")
 	fmt.Printf("当前版本：%s，编译时间：%s", constant.Version, constant.BuildTime)
@@ -28,13 +46,12 @@ func main() {
 	fmt.Println("敬告: 请不要尝试将相关电波数据传送至FR24, RadarBox, FA等境外平台, 这将严重违反无线电管理条例以及国家安全法!")
 	fmt.Println("=============================================================================================")
 	conf.ParseConf()
-	if conf.GlobalConfig.UUID == "" ||
-		len(conf.GlobalConfig.UUID) != 16 ||
-		conf.GlobalConfig.IpDump1090 == "" ||
-		conf.GlobalConfig.PortDump1090 == "" ||
-		conf.GlobalConfig.FeeyoUrl == "" {
 
-		log.Logger.Fatalf("配置中存在错误")
+	for item := range confCheckFunc {
+		fun := confCheckFunc[item]
+		if fun(conf.GlobalConfig) {
+			log.Logger.Fatalf("配置检查失败：%s", item)
+		}
 	}
 	for {
 		dump1090Conn, err := net.Dial("tcp", conf.GlobalConfig.IpDump1090+":"+conf.GlobalConfig.PortDump1090)

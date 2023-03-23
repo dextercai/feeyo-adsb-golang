@@ -1,4 +1,3 @@
-vuIbGLhrKkjtFDC
 ## 综述
 
 使用Golang编写的飞常准ADSB上传程序，适用于各个支持Golang编译的平台。

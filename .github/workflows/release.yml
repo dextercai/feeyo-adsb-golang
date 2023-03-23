@@ -38,7 +38,6 @@ jobs:
       #    go test ./...
 
       - name: Build
-        if: startsWith(github.ref, 'refs/tags/')
         env:
           NAME: feeyo-adsb-golang
           BINDIR: bin
@@ -68,6 +67,7 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v4
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           context: .
           platforms: linux/amd64,linux/arm64,linux/arm64/v8,linux/386,linux/arm/v6,linux/arm/v7,linux/s390x,linux/ppc64le

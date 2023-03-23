@@ -6,9 +6,6 @@ on:
       - "dev-*"
     tags:
       - "v*"
-  pull_request:
-    branches:
-      - "master"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -71,6 +68,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64,linux/arm64/v8,linux/386,linux/arm/v6,linux/arm/v7,linux/s390x,linux/ppc64le
           push: true
-          tags: dextercai/feeyo-adsb-golang:${{ github.ref_name }}
+          tags: |
+            dextercai/feeyo-adsb-golang:${{ github.ref_name }}
+            dextercai/feeyo-adsb-golang:latest

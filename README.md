@@ -10,7 +10,7 @@ docker仓库地址：https://hub.docker.com/r/dextercai/feeyo-adsb-golang
 
 如您所见，我们为不同平台都提供了对应的docker镜像，并托管在了DockerHub仓库。
 
-预编译架构列表：`linux/amd64,linux/arm64,linux/arm64/v8,linux/386,linux/arm/v6,linux/arm/v7,linux/s390x,linux/ppc64le`
+预编译架构列表：`linux/amd64,linux/arm64,linux/arm64/v8,linux/386,linux/arm/v6,linux/arm/v7`
 
 ### 使用Docker与文件配置(conf.ini)
 ```bash

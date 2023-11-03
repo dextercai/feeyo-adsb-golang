@@ -1,12 +1,80 @@
 package log
 
 import (
-	"log"
+	"fmt"
+	rotateLogs "github.com/lestrrat-go/file-rotatelogs"
+	"github.com/rifflock/lfshook"
+	"github.com/sirupsen/logrus"
 	"os"
+	"path/filepath"
+	"time"
 )
 
-var Logger *log.Logger
+var Logger *logrus.Logger
 
 func init() {
-	Logger = log.New(os.Stdout, "", log.Ldate|log.Ltime)
+	Logger = logrus.New()
+	Logger.SetFormatter(&logrus.TextFormatter{
+		FullTimestamp:   true,
+		TimestampFormat: "2006-01-02 15:04:05.000 MST",
+	})
+}
+
+func InitLog(logLevel, logPath, logFile string, logRotationTime, logMaxAge, logRotationSize int64, logRotationCount uint) {
+	Logger.SetLevel(LevelMap[logLevel])
+
+	absPath, _ := os.Getwd()
+	if filepath.IsAbs(logPath) {
+		absPath = ""
+	}
+
+	lpth := fmt.Sprintf("%s/%s", absPath, logPath)
+	if !FileExists(lpth) {
+		err := os.Mkdir(lpth, os.ModePerm)
+		if err != nil {
+			Logger.WithField("scope", "log").WithError(err).Fatalf("创建日志文件夹失败")
+		}
+	}
+
+	logFileName := fmt.Sprintf("%s/%s/%s.%s", absPath, logPath, logFile, "%Y-%m-%d")
+	logFileName, _ = filepath.Abs(logFileName)
+	logier, err := rotateLogs.New(
+		logFileName,
+		//rotateLogs.WithLinkName(fmt.Sprintf("%s/%s", logPath, logFile)), # TODO Win兼容性存疑
+		rotateLogs.WithRotationTime(time.Duration(logRotationTime)*time.Second),
+		rotateLogs.WithMaxAge(time.Duration(logMaxAge)*time.Second),
+		rotateLogs.WithRotationSize(logRotationSize),
+		rotateLogs.WithRotationCount(logRotationCount),
+	)
+
+	if err != nil {
+		Logger.WithField("scope", "log").WithError(err).Fatalf("日志轮转配置错误")
+	}
+	var lfHook *lfshook.LfsHook
+
+	lfHook = lfshook.NewHook(lfshook.WriterMap{
+		logrus.DebugLevel: logier,
+		logrus.InfoLevel:  logier,
+		logrus.WarnLevel:  logier,
+		logrus.ErrorLevel: logier,
+		logrus.FatalLevel: logier,
+		logrus.PanicLevel: logier,
+	}, &logrus.TextFormatter{TimestampFormat: "2006-01-02 15:04:05.000 MST"})
+
+	Logger.AddHook(lfHook)
+
+}
+
+func FileExists(path string) bool {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true
+	}
+
+	if os.IsNotExist(err) {
+		return false
+	}
+
+	Logger.WithField("scope", "log").WithError(err).Errorf("FileExists err")
+	return false
 }

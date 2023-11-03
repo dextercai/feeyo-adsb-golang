@@ -1,11 +1,14 @@
 package main
 
 import (
+	"context"
 	"dextercai.com/feeyo-adsb-golang/conf"
 	"dextercai.com/feeyo-adsb-golang/constant"
+	"dextercai.com/feeyo-adsb-golang/core"
 	"dextercai.com/feeyo-adsb-golang/log"
 	"os"
 	"os/signal"
+	"sync"
 )
 
 func main() {
@@ -22,8 +25,26 @@ func main() {
 
 	log.Logger.Warnf("将使用UUID: %s", currentConfig.FeeyoUUID)
 
-	//wg := sync.WaitGroup{}
-	//wg.Add(1)
+	wg := sync.WaitGroup{}
+	ctx := context.Background()
+	sender := core.NewFeeyoCompressSender(ctx, log.Logger.WithField("scope", "feeyo-sender"), currentConfig.FeeyoUUID, currentConfig.FeeyoUrl)
+
+	wg.Add(1)
+	go func() {
+		sender.Run()
+		wg.Done()
+	}()
+
+	receiver := core.NewDump1090Receiver(ctx, currentConfig.Dump1090Host,
+		currentConfig.Dump1090Port,
+		8192,
+		log.Logger.WithField("scope", "dump1090-receiver"), sender.GetSendChan(),
+	)
+	wg.Add(1)
+	go func() {
+		receiver.Run()
+		wg.Done()
+	}()
 
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Kill, os.Interrupt)
@@ -31,7 +52,8 @@ func main() {
 	sig := <-quit
 	log.Logger.WithField("scope", "process").Infof("收到信号: %s", sig.String())
 
-	//grpcServer.GracefulStop()
-	//wg.Wait()
+	receiver.Stop()
+	sender.Stop()
+	wg.Wait()
 	log.Logger.WithField("scope", "process").Info("按预期关闭")
 }

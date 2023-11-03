@@ -22,7 +22,7 @@ type FeeyoCompressSender struct {
 	FeeyoUrl string
 }
 
-func NewFeeyoCompressSender(logEntry *logrus.Entry, ctx context.Context, UUID string, feeyoUrl string) *FeeyoCompressSender {
+func NewFeeyoCompressSender(ctx context.Context, logEntry *logrus.Entry, UUID string, feeyoUrl string) *FeeyoCompressSender {
 	childCtx, ctxCancel := context.WithCancel(ctx)
 	ch := make(chan []byte)
 	return &FeeyoCompressSender{
@@ -36,6 +36,7 @@ func NewFeeyoCompressSender(logEntry *logrus.Entry, ctx context.Context, UUID st
 }
 
 func (f *FeeyoCompressSender) Run() {
+	defer f.logEntry.Infof("收到退出信号")
 	for {
 		select {
 		case <-f.ctx.Done():

@@ -19,11 +19,10 @@ type Dump1090Receiver struct {
 	ctxCancel        context.CancelFunc
 }
 
-func NewDump1090Receiver(conn net.Conn, host string, port int, packageBatchSize int, logEntry *logrus.Entry, c chan []byte, ctx context.Context) *Dump1090Receiver {
+func NewDump1090Receiver(ctx context.Context, host string, port int, packageBatchSize int, logEntry *logrus.Entry, c chan []byte) *Dump1090Receiver {
 	childCtx, cancelFunc := context.WithCancel(ctx)
 
 	return &Dump1090Receiver{
-		conn:             conn,
 		host:             host,
 		port:             port,
 		packageBatchSize: packageBatchSize,
@@ -36,7 +35,7 @@ func NewDump1090Receiver(conn net.Conn, host string, port int, packageBatchSize 
 
 func (r *Dump1090Receiver) Run() {
 	var err error
-	defer r.logEntry.WithError(err).Infof("收到退出信号")
+	defer r.logEntry.Infof("收到退出信号")
 	for {
 		if r.ctx.Err() != nil {
 			return

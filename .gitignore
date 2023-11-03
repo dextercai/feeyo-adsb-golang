@@ -4,3 +4,5 @@
 /.idea/*
 /bin/*
 /pkg/*
+
+/logs/

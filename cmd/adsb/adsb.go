@@ -2,12 +2,18 @@ package main
 
 import (
 	"dextercai.com/feeyo-adsb-golang/conf"
+	"dextercai.com/feeyo-adsb-golang/constant"
 	"dextercai.com/feeyo-adsb-golang/log"
 	"os"
 	"os/signal"
 )
 
 func main() {
+	log.Logger.Warnf("github.com/dextercai/feeyo-adsb-golang")
+	log.Logger.Warnf("Version: %s, BuildTime: %s", constant.Version, constant.BuildTime)
+	log.Logger.Warnf("根据《中华人民共和国国家安全法》第七十七条；《中华人民共和国无线电管理条例》第五十五条、七十五条。")
+	log.Logger.Warnf("任何单位或者个人不得向境外组织或者个人提供涉及国家安全的境内电波参数资料")
+
 	conf.InitConfig()
 	currentConfig := conf.ReadConfig()
 	log.InitLog(currentConfig.LogLevel, currentConfig.LogPath, currentConfig.LogFile,

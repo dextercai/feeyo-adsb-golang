@@ -22,4 +22,4 @@ ENV TZ Asia/Shanghai
 WORKDIR /app
 COPY --from=builder /build/feeyo-adsb-golang /app/feeyo-adsb-golang
 
-CMD ["/app/feeyo-adsb-golang", "-conf=/app/conf.ini"]
+CMD ["/app/feeyo-adsb-golang"]

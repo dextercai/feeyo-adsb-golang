@@ -14,8 +14,8 @@ docker仓库地址：https://hub.docker.com/r/dextercai/feeyo-adsb-golang
 ### 使用Docker与文件配置(conf.ini)
 ```bash
 docker run --net host \
-  -v /YOUR-PATH-OF/conf.ini:/app/conf.ini:rw -d \
-  dextercai/feeyo-adsb-golang:latest
+  -v /YOUR-PATH-OF/conf.ini:/app/conf.ini:r -d \
+  dextercai/feeyo-adsb-golang:latest --conf=/app/conf.ini
 ```
 
 ### 使用Docker与命令行配置
@@ -41,11 +41,24 @@ UUID在线生成可访问：https://feeyo-uuid.dextercai.com
 你需要在程序**同目录**创建conf.ini文件，内容如下。
 
 ```
-[config]
-UUID=你的UUID（16位）
-ip=127.0.0.1
+[dump1090]
+host=127.0.0.1
 port=30003
+
+[log]
+level=debug
+file=feeyo-adsb-golang.log
+path=./logs/
+rotation_time=86400  # 单位秒
+max_age=604800 # 单位秒
+# max_age 与 rotation_count 不可同时配置
+rotation_size=32 #单位 MB
+rotation_count=0
+
+[feeyo]
+uuid=你的UUID（16位）
 url=http://adsb.feeyo.com/adsb/ReceiveCompressADSB.php
+
 ```
 
 以上展现的是dump1090运行在本机的情况，你也可以按照实际情况进行填写。

@@ -21,7 +21,12 @@ func init() {
 }
 
 func InitLog(logLevel, logPath, logFile string, logRotationTime, logMaxAge, logRotationSize int64, logRotationCount uint) {
-	Logger.SetLevel(LevelMap[logLevel])
+	if _, ok := LevelMap[logLevel]; !ok {
+		Logger.WithField("scope", "log").Warnf("输入了不存在的日志等级: %s，将使用: %s", logLevel, "info")
+		Logger.SetLevel(logrus.InfoLevel)
+	} else {
+		Logger.SetLevel(LevelMap[logLevel])
+	}
 
 	absPath, _ := os.Getwd()
 	if filepath.IsAbs(logPath) {
@@ -43,7 +48,7 @@ func InitLog(logLevel, logPath, logFile string, logRotationTime, logMaxAge, logR
 		//rotateLogs.WithLinkName(fmt.Sprintf("%s/%s", logPath, logFile)), # TODO Win兼容性存疑
 		rotateLogs.WithRotationTime(time.Duration(logRotationTime)*time.Second),
 		rotateLogs.WithMaxAge(time.Duration(logMaxAge)*time.Second),
-		rotateLogs.WithRotationSize(logRotationSize),
+		rotateLogs.WithRotationSize(logRotationSize<<20),
 		rotateLogs.WithRotationCount(logRotationCount),
 	)
 

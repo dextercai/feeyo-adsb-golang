@@ -23,10 +23,9 @@ func init() {
 func InitLog(logLevel, logPath, logFile string, logRotationTime, logMaxAge, logRotationSize int64, logRotationCount uint) {
 	if _, ok := LevelMap[logLevel]; !ok {
 		Logger.WithField("scope", "log").Warnf("输入了不存在的日志等级: %s，将使用: %s", logLevel, "info")
-		Logger.SetLevel(logrus.InfoLevel)
-	} else {
-		Logger.SetLevel(LevelMap[logLevel])
+		logLevel = "info"
 	}
+	Logger.SetLevel(LevelMap[logLevel])
 
 	absPath, _ := os.Getwd()
 	if filepath.IsAbs(logPath) {

@@ -32,15 +32,15 @@ func init() {
 	pflag.String(Dump1090Host, defaultConfigMap[Dump1090Host].(string), "dump1090服务地址")
 	pflag.Int(Dump1090Port, defaultConfigMap[Dump1090Port].(int), "dump1090服务端口")
 	pflag.String(LogLevel, defaultConfigMap[LogLevel].(string), "日志等级")
-	pflag.String(LogPath, defaultConfigMap[LogPath].(string), "dump1090服务端口")
-	pflag.String(LogFile, defaultConfigMap[LogFile].(string), "dump1090服务端口")
+	pflag.String(LogPath, defaultConfigMap[LogPath].(string), "日志存储路径")
+	pflag.String(LogFile, defaultConfigMap[LogFile].(string), "日志存储文件")
 
-	pflag.Int(LogRotationTime, defaultConfigMap[LogRotationTime].(int), "dump1090服务端口")
-	pflag.Int(LogMaxAge, defaultConfigMap[LogMaxAge].(int), "dump1090服务端口")
-	pflag.Int(LogRotationSize, defaultConfigMap[LogRotationSize].(int), "dump1090服务端口")
-	pflag.Uint(LogRotationCount, defaultConfigMap[LogRotationCount].(uint), "dump1090服务端口")
-	pflag.String(FeeyoUrl, defaultConfigMap[FeeyoUrl].(string), "dump1090服务端口")
-	pflag.String(FeeyoUUID, defaultConfigMap[FeeyoUUID].(string), "dump1090服务端口")
+	pflag.Int(LogRotationTime, defaultConfigMap[LogRotationTime].(int), "日志轮转时间 单位秒")
+	pflag.Int(LogMaxAge, defaultConfigMap[LogMaxAge].(int), "日志最大保留时间 单位秒")
+	pflag.Int(LogRotationSize, defaultConfigMap[LogRotationSize].(int), "日志轮转大小 单位MB (为嵌入式设备设计)")
+	pflag.Uint(LogRotationCount, defaultConfigMap[LogRotationCount].(uint), "日志轮转个数 (max_age 与 rotation_count 不可同时配置)")
+	pflag.String(FeeyoUrl, defaultConfigMap[FeeyoUrl].(string), "飞常准上传接口 (建议保留默认)")
+	pflag.String(FeeyoUUID, defaultConfigMap[FeeyoUUID].(string), "设备UUID")
 	pflag.Parse()
 }
 
@@ -70,7 +70,7 @@ var defaultConfigMap = map[string]any{
 	LogFile:          "feeyo-adsb-golang.log",
 	LogRotationTime:  86400,
 	LogMaxAge:        604800,
-	LogRotationSize:  10 << 20,
+	LogRotationSize:  10,
 	LogRotationCount: uint(0),
 	FeeyoUrl:         "http://adsb.feeyo.com/adsb/ReceiveCompressADSB.php",
 	FeeyoUUID:        "",

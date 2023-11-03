@@ -8,6 +8,14 @@
 
 2.0版本正在开发。请注意：与1.0在配置文件上不兼容
 
+### 二进制发布大小膨胀提示
+
+2.0由于使用了一些库的缘故，二进制大小将和1.0版本有较大差异
+
+release编译模式下，在 Ubuntu 22.04 5.14.0-1059-oem 上，目前amd64编译产物大小为6.1MB
+
+建议具有微小设备运行的用户尝试使用UPX进行压缩，上述平台经过UPX压缩后可降至2.1MB
+
 ## Docker 使用说明
 
 docker仓库地址：https://hub.docker.com/r/dextercai/feeyo-adsb-golang

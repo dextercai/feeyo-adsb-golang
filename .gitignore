@@ -1,6 +1,8 @@
 ﻿*.exe
 *.txt
-/Release/*
-/.idea/*
-/bin/*
-/pkg/*
+Release/
+.idea/
+bin/
+pkg/
+
+/logs/

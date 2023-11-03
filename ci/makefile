@@ -6,8 +6,10 @@ GOBUILD=CGO_ENABLED=0 go build -trimpath -ldflags '-X "dextercai.com/feeyo-adsb-
 		-X "dextercai.com/feeyo-adsb-golang/constant.BuildTime=$(BUILDTIME)" \
 		-w -s -buildid='
 
+CMD_ADSB_PATH=./cmd/adsb
+
 all: docker # Most used
 
 docker:
-	$(GOBUILD) -o $(BINDIR)/$(NAME)
+	$(GOBUILD) -o $(BINDIR)/$(NAME) $(CMD_ADSB_PATH)
 
